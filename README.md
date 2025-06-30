@@ -4,5 +4,4 @@ react 复习
   1.react
   2.vite-react
 下载命令：npx create-react-app my-app
-node 版本
-npm  版本
+node 版本 18.15.0
