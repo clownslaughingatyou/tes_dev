@@ -1,52 +1,50 @@
 import './App.css';
-import { useRoutes,Outlet } from "react-router-dom";
+import { useRoutes, useNavigate } from "react-router-dom";
 import routes from './router';
-
 import React, { useState } from 'react';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
+  EditFilled,
 } from '@ant-design/icons';
 import { Button, Layout, Menu, theme } from 'antd';
 const { Header, Sider, Content } = Layout;
+
+function getItem(label, key, icon, children) {
+  return {
+    key,
+    icon,
+    children,
+    label,
+  };
+}
+const items = [
+  getItem('记账', '/home', <VideoCameraOutlined />),
+  getItem('统计', '/feng', <UserOutlined />),
+];
+
+
+
 const App = () => {
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+  const navigate = useNavigate()
+  const onClick = (e) => {
+    navigate(e.key, { replace: true })
+  }
+
   return (
     <Layout style={{ height: '100vh' }}>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="demo-logo-vertical" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          items={[
-            {
-              key: '1',
-              icon: <UserOutlined />,
-              label: 'nav 1',
-              to: '/Feng'
-            },
-            {
-              key: '2',
-              icon: <VideoCameraOutlined />,
-              label: 'Feng 2',
-              to: '/Feng',
-              path: '/Feng',
-            },
-            {
-              key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3',
-              to: '/Home'
-            },
-          ]}
-        />
+      <Sider trigger={null} collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+        <div className='title' >
+          <EditFilled />
+          <span style={{ marginLeft: 15 }}>我的联系手册</span>
+        </div>
+        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} onClick={onClick} />
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }}>
@@ -71,7 +69,6 @@ const App = () => {
           }}
         >
           {useRoutes(routes)}
-          {/* <Outlet /> */}
         </Content>
       </Layout>
     </Layout>

@@ -1,8 +1,8 @@
- 
+
 import { Navigate } from "react-router-dom";
-import Home from "../pages/Home.js";
+import Home from "../pages/home";
 import Feng from "../pages/Feng.js";
- 
+
 const routes = [
   {
     path: "/",
@@ -16,20 +16,6 @@ const routes = [
     path: "/Feng",
     element: <Feng></Feng>,
   },
-  {
-    path: "/Goods",
-    // element: <Goods></Goods>,
-    children: [
-        {
-          path: "Detail",
-          // element: <Detail></Detail>,
-        },
-        {
-          path: "Comment",
-          // element: <Comment></Comment>
-        }
-    ],
-  },
 ];
- 
+
 export default routes;
