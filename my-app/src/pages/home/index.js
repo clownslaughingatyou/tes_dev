@@ -26,6 +26,7 @@ export default class Home extends Component {
   // 
   onEmitFrom = (values) => {
     // 更新状态
+    console.log('提交的值', values);
     if (this.state.editItem) {
       this.setState((prevState) => ({
         data: prevState.data.map(d => {
@@ -36,7 +37,7 @@ export default class Home extends Component {
               name: values.username,
               phone: values.phone,
               score: values.score,
-              picker: values.picker,
+              selectedDate: values.selectedDate,
               textArea: values.textArea,
             }
             : d;
@@ -53,7 +54,7 @@ export default class Home extends Component {
               name: values.username,
               phone: values.phone,
               score: values.score,
-              picker: values.picker,
+              selectedDate: values.selectedDate,
               textArea: values.textArea,
             }
           ]
@@ -66,6 +67,14 @@ export default class Home extends Component {
     // 这里可以添加编辑逻辑
     this.setState({ editItem: e });
   }
+  // 删除按钮点击事件
+  onRemove = (e) => {
+    // 这里可以添加删除逻辑
+    this.setState((prevState) => ({
+      data: prevState.data.filter(item => item.id !== e.id),
+      editItem: null, // 删除后清空编辑项
+    }));
+  }
 
   render() {
     const { data, editItem } = this.state
@@ -74,7 +83,7 @@ export default class Home extends Component {
         {/* 表单部分 */}
         <div className='form'>
           <h2>添加联系人</h2>
-          <Link to="/feng" state={{ data: 123 }}>跳转关于页面</Link>
+          <Link to="/Feng" state={{ data: 123 }}>跳转关于页面</Link>
           <FromAdd onValuesChange={this.onEmitFrom} editItem={editItem} />
         </div>
         {/* 展示部分 */}
@@ -91,16 +100,21 @@ export default class Home extends Component {
                         <Rate
                           value={item.score}
                           disabled
+                          onChange={(e) => e.target.value}
                         />
                       </div>
-                      <div>评论时间：{item.picker}</div>
+                      <div>评论时间：{item.selectedDate}</div>
                       <div>评论：{item.textArea}</div>
                     </div>
                     <div>
                       <div>
-                        <Button color="danger" variant="solid" size='middle'
+                        <Button color="danger" variant="outlined" size='middle'
                           onClick={() => this.onEdit(item)} >
                           编辑
+                        </Button>
+                        <Button color="danger" variant="solid" size='middle'
+                          onClick={() => this.onRemove(item)} >
+                          删除
                         </Button>
                       </div>
                     </div>

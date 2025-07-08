@@ -1,7 +1,7 @@
 
 import { Navigate } from "react-router-dom";
 import Home from "../pages/home";
-import Feng from "../pages/Feng.js";
+import Feng from "../pages/feng";
 
 const routes = [
   {

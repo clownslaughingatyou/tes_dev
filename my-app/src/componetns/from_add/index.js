@@ -6,8 +6,12 @@ import {
   Input,
   Rate,
   message,
+  ConfigProvider,
 } from 'antd';
-const { RangePicker } = DatePicker;
+//时间
+import moment from 'moment';
+import zhCN from 'antd/locale/zh_CN';
+import dayjs from 'dayjs';
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -19,7 +23,7 @@ const formItemLayout = {
   },
 };
 const FromAdd = ({ onValuesChange, editItem }) => {
-   const [messageApi] = message.useMessage();
+  const [messageApi, contextHolder] = message.useMessage();
   // 定义表单布局
   // 定义表表单状态
   const [formState, setFormState] = useState({
@@ -31,13 +35,13 @@ const FromAdd = ({ onValuesChange, editItem }) => {
   })
   const [form] = Form.useForm();
   const variant = Form.useWatch('variant', form);
-  // 提交表单
+  // 提交表单    
   const onFinish = (values) => {
     onValuesChange(values);
     if (editItem) {
       messageApi.open({
         type: 'success',
-        content: '编辑成功',
+        content: '成功',
       });
     }
 
@@ -59,81 +63,99 @@ const FromAdd = ({ onValuesChange, editItem }) => {
     }
   }, [editItem, form]);
   return (
-    <Form
-      {...formItemLayout}
-      form={form}
-      variant={variant || 'outlined'}
-      style={{ maxWidth: 600 }}
-      initialValues={{ variant: 'outlined' }}
-      onFinish={onFinish}
-    >
-
-
-      <Form.Item label="姓名" name="username" rules={[{ required: true, message: 'Please username!' }]}>
-        <Input
-          value={formState.username}
-          onChange={(e) => setFormState({ ...formState, username: e.target.value })}
-          placeholder="请输入姓名"
-          type='text'
-        />
-      </Form.Item>
-
-      <Form.Item
-        label="电话"
-        name="phone"
+    <>
+      {contextHolder}
+      <Form
+        {...formItemLayout}
+        form={form}
+        variant={variant || 'outlined'}
+        style={{ maxWidth: 600 }}
+        initialValues={{ variant: 'outlined' }}
+        onFinish={onFinish}
       >
-        <Input style={{ width: '100%' }}
-          type='text'
-          value={formState.phone}
-          onChange={(value) => setFormState({ ...formState, phone: value })}
-          placeholder="请输入电话"
-        />
-      </Form.Item>
+        <Form.Item label="姓名" name="username" rules={[{ required: true, message: 'Please username!' }]}>
+          <Input
+            value={formState.username}
+            onChange={(e) => setFormState({ ...formState, username: e.target.value })}
+            placeholder="请输入姓名"
+            type='text'
+          />
+        </Form.Item>
 
-      <Form.Item
-        label="评分"
-        name="score"
-      >
-        <Rate
-          value={formState.score}
-          onChange={(value) => setFormState({ ...formState, score: value })}
-          style={{ fontSize: 24 }}
-          allowHalf
-        />
-      </Form.Item>
+        <Form.Item
+          label="电话"
+          name="phone"
+        >
+          <Input style={{ width: '100%' }}
+            type='text'
+            value={formState.phone}
+            onChange={(value) => setFormState({ ...formState, phone: value })}
+            placeholder="请输入电话"
+          />
+        </Form.Item>
 
-      <Form.Item
-        label="时间选择"
-        name="picker"
-      >
-        <RangePicker
+        <Form.Item
+          label="评分"
+          name="score"
+        >
+          <Rate
+            value={formState.score}
+            onChange={(value) => setFormState({ ...formState, score: value })}
+            style={{ fontSize: 24 }}
+            allowHalf
+          />
+        </Form.Item>
+
+        <Form.Item
+          label="时间选择"
+          name="picker"
+        >
+          <ConfigProvider locale={zhCN}>
+            <DatePicker
+              onChange={(value) => setFormState({ ...formState, picker: value })}
+              style={{ width: '100%' }}
+              placeholder="请选择时间"
+              format="YYYY-MM-DD"
+            />
+          </ConfigProvider>
+          {/* <RangePicker
           key={formState.picker}
           value={formState.picker}
           onChange={(value) => setFormState({ ...formState, picker: value })}
           style={{ width: '100%' }}
           placeholder={['开始时间', '结束时间']}
           format="YYYY-MM-DD"
-        />
-      </Form.Item>
+        /> */}
+        </Form.Item>
 
-      <Form.Item
-        label="简介"
-        name="textArea"
-      >
-        <Input.TextArea
-          value={formState.textArea}
-          onChange={(e) => setFormState({ ...formState, textArea: e.target.value })}
-          placeholder="请输入简介"
-          autoSize={{ minRows: 3, maxRows: 5 }}
-        />
-      </Form.Item>
+        <Form.Item
+          label="简介"
+          name="textArea"
+        >
+          <Input.TextArea
+            value={formState.textArea}
+            onChange={(e) => setFormState({ ...formState, textArea: e.target.value })}
+            placeholder="请输入简介"
+            autoSize={{ minRows: 3, maxRows: 5 }}
+          />
+        </Form.Item>
 
-      <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
+        <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
+          {
+            editItem ? (
+              <Button type="primary" htmlType="submit">
+                修改
+              </Button>
+            ) : (
+              <Button type="primary" htmlType="submit">
+                保存
+              </Button>
+            )
+          }
+
+        </Form.Item>
+      </Form>
+    </>
   );
 };
 export default FromAdd;
