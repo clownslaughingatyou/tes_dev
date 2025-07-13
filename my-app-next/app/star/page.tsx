@@ -6,7 +6,7 @@ export default async function Stars() {
   const supabase = await createClient();
 
   // 从 Supabase 获取数据
-  const { data:star, error } = await supabase.from("star").select();
+  const { data: star, error } = await supabase.from("star").select();
 
   // 错误处理
   if (error) {

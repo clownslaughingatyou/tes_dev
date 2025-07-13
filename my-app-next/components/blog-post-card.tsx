@@ -6,12 +6,13 @@ import Link from "next/link";
 
 
 interface Post {
-  id: number
-  title: string
-  excerpt: string
-  date: string
-  author: string
-  slug: string
+  id?: number
+  title?: string
+  excerpt?: string
+  date?: string
+  author?: string
+  slug?: string
+  name?: string
 }
 interface BlogPostCardProps {
   post: Post
@@ -22,7 +23,7 @@ export function BlogPostCard({ post }: BlogPostCardProps) {
     <Card className="flex flex-col h-full">
       <CardHeader>
         <div className="text-sm text-muted-foreground mb-1">
-          {post.date} · {post.author}
+          {post.date} · {post.author} . {post.name}
         </div>
         <Link href={`/blog/${post.slug}`} className="hover:underline">
           <h3 className="text-xl font-bold">{post.title}</h3>
